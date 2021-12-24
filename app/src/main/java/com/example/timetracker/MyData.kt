@@ -6,15 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-//class MyData {
-////    object Data {
-////        val nameArray: ArrayList<String>
-////            get() = arrayListOf("Yovel", "Idan")
-////        val descriptionArray: ArrayList<String> = arrayListOf("Fullstack", "Data Engineer")
-////        val drawableArray: ArrayList<Int> = arrayListOf(R.drawable.ic_launcher, R.drawable.ic_launcher)
-////        val idArray: ArrayList<Int> = arrayListOf(0, 1)
-////    }
-//}
 class MyData(context: Context, factory: SQLiteDatabase.CursorFactory?):
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
     companion object{
@@ -35,10 +26,10 @@ class MyData(context: Context, factory: SQLiteDatabase.CursorFactory?):
                 IMAGE_COL + " INTEGER " + ")")
 
         db.execSQL(query)
-        addName(db, "Yovel", "Fullstack Developer", R.drawable.ic_launcher)
-        addName(db, "Idan", "Data Engineer", R.drawable.ic_launcher)
-        addName(db, "Yossi", "Teacher", R.drawable.ic_launcher)
-        addName(db, "Avi", "Chef", R.drawable.ic_launcher)
+//        addName(db, "Yovel", "Fullstack Developer", R.drawable.ic_launcher)
+//        addName(db, "Idan", "Data Engineer", R.drawable.ic_launcher)
+//        addName(db, "Yossi", "Teacher", R.drawable.ic_launcher)
+//        addName(db, "Avi", "Chef", R.drawable.ic_launcher)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -46,7 +37,8 @@ class MyData(context: Context, factory: SQLiteDatabase.CursorFactory?):
         onCreate(db)
     }
 
-    fun addName(db: SQLiteDatabase, name: String, description: String, image: Int ){
+    fun addName(name: String, description: String, image: Int ){
+        val db = this.writableDatabase
         val values = ContentValues()
         values.put(NAME_COl, name)
         values.put(DESCRIPTION_COL, description)

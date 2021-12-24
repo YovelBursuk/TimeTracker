@@ -23,6 +23,10 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>):
             textViewName = itemView.findViewById(R.id.textViewName)
             textViewDescription = itemView.findViewById(R.id.textViewDescription)
             imageViewIcon = itemView.findViewById(R.id.imageView)
+
+//            itemView.setOnClickListener {
+//
+//            }
         }
     }
 

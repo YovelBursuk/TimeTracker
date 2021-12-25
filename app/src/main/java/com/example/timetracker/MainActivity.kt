@@ -1,7 +1,9 @@
 package com.example.timetracker
 
+import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +18,18 @@ class MainActivity : AppCompatActivity() {
     private val openPostPopupActivityCustom =
         registerForActivityResult(PostPopupActivityContract()) { result ->
             if (result != null) {
-                val db = MyData(this, null)
+//                val db = MyData(this, null)
                 val resultName = result.getString("name") ?: "Default"
                 val resultDescription = result.getString("description") ?: "Default"
                 val resultImage = result.getInt("image", R.drawable.ic_launcher)
-                db.addName(resultName, resultDescription, resultImage)
-                dataSet.add(DataModel(10, resultName, resultDescription, resultImage))
-                adapter!!.notifyDataSetChanged()
+//                db.addName(resultName, resultDescription, resultImage)
+                CategoriesDAL.addCategory(resultName, resultDescription, resultImage, object: MyPostCallback {
+                    override fun onPostCallback(value: String) {
+                        dataSet.add(DataModel(value, resultName, resultDescription, resultImage))
+                        adapter!!.notifyDataSetChanged()
+                    }
+                })
+
             }
         }
 
@@ -35,20 +42,29 @@ class MainActivity : AppCompatActivity() {
         recycleView?.layoutManager = layoutManager
         recycleView?.itemAnimator = DefaultItemAnimator()
 
-        val db = MyData(this, null)
-        val categoriesCursor = db.getAllCategories()
+//        val db = MyData(this, null)
+//        val categoriesCursor = db.getAllCategories()
 
-        while (categoriesCursor!!.moveToNext()) {
-            dataSet.add(DataModel(
-                categoriesCursor.getInt(categoriesCursor.getColumnIndex(MyData.ID_COL)),
-                categoriesCursor.getString(categoriesCursor.getColumnIndex(MyData.NAME_COl)),
-                categoriesCursor.getString(categoriesCursor.getColumnIndex(MyData.DESCRIPTION_COL)),
-                categoriesCursor.getInt(categoriesCursor.getColumnIndex(MyData.IMAGE_COL))
-            ))
-        }
+//        while (categoriesCursor!!.moveToNext()) {
+//            dataSet.add(DataModel(
+//                categoriesCursor.getInt(categoriesCursor.getColumnIndex(MyData.ID_COL)),
+//                categoriesCursor.getString(categoriesCursor.getColumnIndex(MyData.NAME_COl)),
+//                categoriesCursor.getString(categoriesCursor.getColumnIndex(MyData.DESCRIPTION_COL)),
+//                categoriesCursor.getInt(categoriesCursor.getColumnIndex(MyData.IMAGE_COL))
+//            ))
+//        }
 
         adapter = CustomAdapter(dataSet)
         recycleView?.adapter = adapter
+
+        CategoriesDAL.getAllCategories(object: MyGetCallback {
+            override fun onGetCallback(value: ArrayList<DataModel>) {
+                dataSet.addAll(value)
+                adapter!!.notifyDataSetChanged()
+            }
+        })
+
+
 
         val myAddCategoryBtnView: FloatingActionButton = findViewById(R.id.add_category)
         myAddCategoryBtnView.setOnClickListener {

@@ -9,31 +9,28 @@ import android.database.sqlite.SQLiteOpenHelper
 class MyData(context: Context, factory: SQLiteDatabase.CursorFactory?):
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
     companion object{
-        private val DATABASE_NAME = "TIME_TRACKER"
-        private val DATABASE_VERSION = 1
-        val CATEGORIES_TABLE_NAME = "categories"
-        val ID_COL = "id"
-        val NAME_COl = "name"
-        val DESCRIPTION_COL = "description"
-        val IMAGE_COL = "image"
+        private const val DATABASE_NAME = "TIME_TRACKER"
+        private const val DATABASE_VERSION = 1
+        const val CATEGORIES_TABLE_NAME = "categories"
+        const val ID_COL = "id"
+        const val NAME_COl = "name"
+        const val DESCRIPTION_COL = "description"
+        const val IMAGE_COL = "image"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        val query = ("CREATE TABLE " + CATEGORIES_TABLE_NAME + " ("
-                + ID_COL + " INTEGER PRIMARY KEY, " +
-                NAME_COl + " TEXT," +
-                DESCRIPTION_COL + " TEXT," +
-                IMAGE_COL + " INTEGER " + ")")
+        val CREATE_TABLE_QUERY = "CREATE TABLE $CATEGORIES_TABLE_NAME ($ID_COL INTEGER PRIMARY KEY, $NAME_COl TEXT, $DESCRIPTION_COL TEXT, $IMAGE_COL INTEGER)"
+        val CREATE_VALUES_QUERY = "INSERT INTO $CATEGORIES_TABLE_NAME ($ID_COL, $NAME_COl, $DESCRIPTION_COL, $IMAGE_COL) " +
+                "VALUES (1, 'Yovel', 'Fullstack Developer', ${R.drawable.ic_launcher})," +
+                "(2, 'Idan', 'Data Engineer', ${R.drawable.ic_launcher})," +
+                "(3, 'Yossi', 'Teacher', ${R.drawable.ic_launcher})"
 
-        db.execSQL(query)
-//        addName(db, "Yovel", "Fullstack Developer", R.drawable.ic_launcher)
-//        addName(db, "Idan", "Data Engineer", R.drawable.ic_launcher)
-//        addName(db, "Yossi", "Teacher", R.drawable.ic_launcher)
-//        addName(db, "Avi", "Chef", R.drawable.ic_launcher)
+        db.execSQL(CREATE_TABLE_QUERY)
+        db.execSQL(CREATE_VALUES_QUERY)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS " + CATEGORIES_TABLE_NAME)
+        db.execSQL("DROP TABLE IF EXISTS $CATEGORIES_TABLE_NAME")
         onCreate(db)
     }
 
@@ -49,6 +46,6 @@ class MyData(context: Context, factory: SQLiteDatabase.CursorFactory?):
 
     fun getAllCategories(): Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM " + CATEGORIES_TABLE_NAME, null)
+        return db.rawQuery("SELECT * FROM $CATEGORIES_TABLE_NAME", null)
     }
 }

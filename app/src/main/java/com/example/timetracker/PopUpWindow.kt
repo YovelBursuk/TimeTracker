@@ -62,9 +62,6 @@ class PopUpWindow : AppCompatActivity() {
         )?.start()
 
         popupWindowButtonView?.setOnClickListener {
-//            onBackPressed()
-//            val db = MyData(this, null)
-//            db.addName("Category", "From Popup", R.drawable.ic_launcher)
             val returnIntent = Intent()
             returnIntent.putExtra("name", "Category")
             returnIntent.putExtra("description", "From Popup")

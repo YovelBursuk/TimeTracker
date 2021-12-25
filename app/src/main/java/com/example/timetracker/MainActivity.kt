@@ -1,7 +1,5 @@
 package com.example.timetracker
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.Nullable
@@ -15,7 +13,6 @@ class MainActivity : AppCompatActivity() {
     private var recycleView: RecyclerView? = null
     private var layoutManager: LinearLayoutManager? = null
     private var adapter: CustomAdapter? = null
-    val LAUNCH_POPUP_ACTIVITY: Int = 1
     private val openPostPopupActivityCustom =
         registerForActivityResult(PostPopupActivityContract()) { result ->
             if (result != null) {
@@ -55,20 +52,6 @@ class MainActivity : AppCompatActivity() {
 
         val myAddCategoryBtnView: FloatingActionButton = findViewById(R.id.add_category)
         myAddCategoryBtnView.setOnClickListener {
-//            db.addName("Testing", "Should work", R.drawable.ic_launcher)
-//            dataSet.add(
-//                DataModel(
-//                10, "Testing", "Should work", R.drawable.ic_launcher
-//            )
-//            )
-//            adapter!!.notifyDataSetChanged()
-
-//            val intent = Intent(this, PopUpWindow::class.java)
-//            intent.putExtra("popuptitle", "Add Category")
-//            intent.putExtra("popuptext", "Not Implemented Yet")
-//            intent.putExtra("popupbtn", "Create")
-//            startActivityForResult(intent, LAUNCH_POPUP_ACTIVITY)
-
             val b = Bundle()
             b.putString("popuptitle", "Add Category At Popup")
             b.putString("popuptext", "Not Implemented Yet")
@@ -76,20 +59,4 @@ class MainActivity : AppCompatActivity() {
             openPostPopupActivityCustom.launch(b)
         }
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == LAUNCH_POPUP_ACTIVITY) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                val db = MyData(this, null)
-//                val resultName = data?.getStringExtra("name") ?: "Default"
-//                val resultDescription = data?.getStringExtra("description") ?: "Default"
-//                val resultImage = data?.getIntExtra("image", R.drawable.ic_launcher) ?: R.drawable.ic_launcher
-//                db.addName(resultName, resultDescription, resultImage)
-//                dataSet.add(DataModel(10, resultName, resultDescription, resultImage))
-//                adapter!!.notifyDataSetChanged()
-//            }
-//        }
-//    }
 }

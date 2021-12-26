@@ -1,20 +1,22 @@
 package com.example.timetracker
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 
 object CategoriesDAL {
     private val COLLECTION_NAME = "categories"
     private val CATEGORIES_ICONS_MAPPING = mapOf(
-        0 to R.drawable.ic_launcher,
-        1 to R.drawable.ic_baseline_add_24
+        "Default" to R.drawable.ic_launcher,
+        "Plus" to R.drawable.ic_baseline_add_24
     )
+    private val REVERSED_CATEGORIES_ICONS_MAPPING = CATEGORIES_ICONS_MAPPING.entries.associate { (k, v) -> v.toString() to k}
 
     fun addCategory(name: String, description: String, icon: Int, myPostCallback: MyPostCallback) {
         val db = FirebaseFirestore.getInstance()
         val category: MutableMap<String, Any> = HashMap()
         category["name"] = name
         category["description"] = description
-        category["image"] = icon
+        category["image"] = REVERSED_CATEGORIES_ICONS_MAPPING[icon.toString()] ?: "Default"
 
         db.collection(COLLECTION_NAME).add(category).addOnCompleteListener { task ->
             if (task.isSuccessful) {

@@ -6,4 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".TaskActivity">
 
+    <RelativeLayout
+        android:id="@+id/tasksRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_300"
+        android:orientation="horizontal" >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/add"
+            android:src="@drawable/ic_baseline_add_24"
+            app:rippleColor="@color/white" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_tasks_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

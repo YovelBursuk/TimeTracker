@@ -7,8 +7,20 @@ class DataModel(val id: String,
                 val description: String = "Description",
                 val image: Int)
 
+class TaskDataModel(
+    val id: String,
+    val categoryId: String,
+    val name: String = "Name",
+    val description: String = "Description",
+    val image: Int
+)
+
 interface MyGetCallback {
     fun onGetCallback(value: ArrayList<DataModel>)
+}
+
+interface MyTasksGetCallback {
+    fun onGetCallback(value: ArrayList<TaskDataModel>)
 }
 
 interface MyPostCallback {

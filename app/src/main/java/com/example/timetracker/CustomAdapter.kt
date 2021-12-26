@@ -1,6 +1,7 @@
 package com.example.timetracker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,16 +20,19 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>, val callback: MyIntentCal
         var textViewName: TextView? = null
         var textViewDescription: TextView? = null
         var imageViewIcon: ImageView? = null
+        var cardId: TextView? = null
 
         init {
             cardView = itemView.findViewById(R.id.card_view)
             textViewName = itemView.findViewById(R.id.textViewName)
             textViewDescription = itemView.findViewById(R.id.textViewDescription)
             imageViewIcon = itemView.findViewById(R.id.imageView)
+            cardId = itemView.findViewById(R.id.categoryId)
 
             itemView.setOnClickListener {
                 val b = Bundle()
-                b.putString("categoryName", textViewName?.text.toString())
+                Log.d("Message", "Yovel the card id is ${cardId?.text.toString()}")
+                b.putString("categoryId", cardId?.text.toString())
                 listenerCallback.onIntentCallback(b)
             }
         }
@@ -45,10 +49,12 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>, val callback: MyIntentCal
         val textViewName: TextView? = holder.textViewName
         val textViewDescription: TextView? = holder.textViewDescription
         val imageView: ImageView? = holder.imageViewIcon
+        val cardIdView: TextView? = holder.cardId
 
         textViewName?.text = dataSet[position].name
         textViewDescription?.text = dataSet[position].description
         imageView?.setImageResource(dataSet[position].image)
+        cardIdView?.text = dataSet[position].id
     }
 
     override fun getItemCount(): Int {

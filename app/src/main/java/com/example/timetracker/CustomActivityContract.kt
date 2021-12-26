@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.appcompat.app.AppCompatActivity
 
-class PostPopupActivityContract : ActivityResultContract<Bundle, Bundle>() {
+class CustomActivityContract(private val activityClass: Class<*>) : ActivityResultContract<Bundle, Bundle>() {
     override fun createIntent(context: Context, input: Bundle): Intent {
-        return Intent(context, PopUpWindow::class.java).apply {
+        return Intent(context, activityClass).apply {
             putExtras(input)
         }
     }

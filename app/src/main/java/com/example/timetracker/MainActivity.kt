@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private var layoutManager: LinearLayoutManager? = null
     private var adapter: CustomAdapter? = null
     private val openPostPopupActivityCustom =
-        registerForActivityResult(PostPopupActivityContract()) { result ->
+        registerForActivityResult(CustomActivityContract(PopUpWindow::class.java)) { result ->
             if (result != null) {
                 val resultName = result.getString("name") ?: "Default"
                 val resultDescription = result.getString("description") ?: "Default"

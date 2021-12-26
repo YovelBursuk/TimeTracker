@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    private val openTasksActivityCustom =
+        registerForActivityResult(CustomActivityContract(TaskActivity::class.java)) {}
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +40,11 @@ class MainActivity : AppCompatActivity() {
         recycleView?.layoutManager = layoutManager
         recycleView?.itemAnimator = DefaultItemAnimator()
 
-        adapter = CustomAdapter(dataSet)
+        adapter = CustomAdapter(dataSet, object: MyIntentCallback {
+            override fun onIntentCallback(bundle: Bundle) {
+                openTasksActivityCustom.launch(bundle)
+            }
+        })
         recycleView?.adapter = adapter
 
         CategoriesDAL.getAllCategories(object: MyGetCallback {

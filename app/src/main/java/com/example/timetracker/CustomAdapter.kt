@@ -1,5 +1,6 @@
 package com.example.timetracker
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,11 @@ import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(val dataSet: ArrayList<DataModel>):
+class CustomAdapter(val dataSet: ArrayList<DataModel>, val callback: MyIntentCallback):
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MyViewHolder(itemView: View, private val listenerCallback: MyIntentCallback) :
+        RecyclerView.ViewHolder(itemView) {
         var cardView: CardView? = null
         var textViewName: TextView? = null
         var textViewDescription: TextView? = null
@@ -24,9 +26,11 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>):
             textViewDescription = itemView.findViewById(R.id.textViewDescription)
             imageViewIcon = itemView.findViewById(R.id.imageView)
 
-//            itemView.setOnClickListener {
-//
-//            }
+            itemView.setOnClickListener {
+                val b = Bundle()
+                b.putString("categoryName", textViewName?.text.toString())
+                listenerCallback.onIntentCallback(b)
+            }
         }
     }
 
@@ -34,7 +38,7 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>):
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.cards_layout, parent, false)
-        return MyViewHolder(view)
+        return MyViewHolder(view, callback)
     }
 
     override fun onBindViewHolder(@NonNull holder: MyViewHolder, position: Int) {

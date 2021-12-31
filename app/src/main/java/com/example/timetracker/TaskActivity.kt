@@ -64,8 +64,9 @@ class TaskActivity : AppCompatActivity() {
         val myAddCategoryBtnView: FloatingActionButton = findViewById(R.id.add_task)
         myAddCategoryBtnView.setOnClickListener {
             val b = Bundle()
-            b.putString("popuptitle", "Add Task At Popup")
-            b.putString("popuptext", "Not Implemented Yet")
+            b.putString("popuptitle", "Add Task")
+            b.putString("popuptext", "Task Title:")
+            b.putString("popupdescription", "Task Description:")
             b.putString("popupbtn", "Create")
             openPostPopupActivityCustom.launch(b)
         }

@@ -59,8 +59,9 @@ class MainActivity : AppCompatActivity() {
         val myAddCategoryBtnView: FloatingActionButton = findViewById(R.id.add_category)
         myAddCategoryBtnView.setOnClickListener {
             val b = Bundle()
-            b.putString("popuptitle", "Add Category At Popup")
-            b.putString("popuptext", "Not Implemented Yet")
+            b.putString("popuptitle", "Add Category")
+            b.putString("popuptext", "Category Title:")
+            b.putString("popupdescription", "Category Description:")
             b.putString("popupbtn", "Create")
             openPostPopupActivityCustom.launch(b)
         }

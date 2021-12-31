@@ -9,8 +9,12 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Scroller
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,11 +24,17 @@ class PopUpWindow : AppCompatActivity() {
     private var popupTitle = ""
     private var popupText = ""
     private var popupButton = ""
+    private var popupDescription = ""
+    private var inputTitle = ""
+    private var inputDescription = ""
     var popupWindowTitleView: TextView? = null
     var popupWindowTextView: TextView? = null
+    var popupWindowDescriptionView: TextView? = null
     var popupWindowButtonView: Button? = null
     var popupWindowBackgroundView: ConstraintLayout? = null
     var popupWindowViewWithBorder: CardView? = null
+    var inputTitleView: EditText? = null
+    var inputDescriptionView: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +44,21 @@ class PopUpWindow : AppCompatActivity() {
         val bundle = intent.extras
         popupTitle = bundle?.getString("popuptitle", "Title") ?: ""
         popupText = bundle?.getString("popuptext", "Text") ?: ""
+        popupDescription = bundle?.getString("popupdescription", "Description") ?: ""
         popupButton = bundle?.getString("popupbtn", "Button") ?: ""
 
         popupWindowTitleView = findViewById(R.id.popup_window_title)
         popupWindowTextView = findViewById(R.id.popup_window_text)
+        popupWindowDescriptionView = findViewById(R.id.popup_window_description)
         popupWindowButtonView = findViewById(R.id.popup_window_button)
         popupWindowBackgroundView = findViewById(R.id.popup_window_background)
         popupWindowViewWithBorder = findViewById(R.id.popup_window_view_with_border)
+        inputTitleView = findViewById(R.id.inputTitle)
+        inputDescriptionView = findViewById(R.id.inputDescription)
 
         popupWindowTitleView?.text = popupTitle
         popupWindowTextView?.text = popupText
+        popupWindowDescriptionView?.text = popupDescription
         popupWindowButtonView?.text = popupButton
 
         // Fade animation for the background of Popup Window
@@ -63,8 +78,8 @@ class PopUpWindow : AppCompatActivity() {
 
         popupWindowButtonView?.setOnClickListener {
             val returnIntent = Intent()
-            returnIntent.putExtra("name", "Category")
-            returnIntent.putExtra("description", "From Popup")
+            returnIntent.putExtra("name", inputTitleView?.text.toString())
+            returnIntent.putExtra("description", inputDescriptionView?.text.toString())
             returnIntent.putExtra("image", R.drawable.ic_baseline_add_24)
             setResult(Activity.RESULT_OK, returnIntent)
             finish()

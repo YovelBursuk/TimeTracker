@@ -2,4 +2,6 @@
     <string name="app_name">TimeTracker</string>
     <string name="categoryDefaultValue">Temp</string>
     <string name="add">Add</string>
+    <string name="onRunningTaskButtonText">Task is running!</string>
+    <string name="startTaskButtonText">Start Task</string>
 </resources>

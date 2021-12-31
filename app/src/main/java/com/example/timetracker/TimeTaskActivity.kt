@@ -9,48 +9,49 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TimeTaskActivity : AppCompatActivity() {
     private var title = ""
+    private var description = ""
     private var taskId = ""
     var timeTaskTitleView: TextView? = null
+    var timeTaskDescriptionView: TextView? = null
     var startTaskButtonView: Button? = null
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_task)
 
         val bundle = intent.extras
         title = bundle?.getString("timeTaskTitle", "Title") ?: ""
+        description = bundle?.getString("timeTaskDescription", "Description") ?: ""
         taskId = bundle?.getString("taskId", "Id") ?: ""
 
         timeTaskTitleView = findViewById(R.id.timeTaskTextView)
-        var tempTitle = "$title \n $taskId"
+        timeTaskDescriptionView = findViewById(R.id.timeTaskDescriptionTextView)
+        timeTaskTitleView?.text = title
+        timeTaskDescriptionView?.text = description
 
         startTaskButtonView = findViewById(R.id.startTaskButton)
         startTaskButtonView?.setOnClickListener {
             TimeTaskDAL.startTask(taskId, object: MyPostCallback {
                 override fun onPostCallback(value: String) {
-                    val toast = Toast.makeText(applicationContext, "Start Task: $title", Toast.LENGTH_SHORT)
+                    val toast = Toast.makeText(applicationContext, "Started Task: $title", Toast.LENGTH_LONG)
                     toast.show()
-                    startTaskButtonView?.text = "Task is running!"
-                    startTaskButtonView?.isEnabled = false
-                    startTaskButtonView?.isClickable = false
+                    disableButton()
                 }
             })
         }
 
         TimeTaskDAL.getLastRunningTaskId(object: MyTimestampGetCallback {
             override fun onGetCallback(value: String) {
-                tempTitle += "\n $value"
-                timeTaskTitleView?.text = tempTitle
-
                 if (value == taskId) {
-                    startTaskButtonView?.text = "Task is running!"
-                    startTaskButtonView?.isEnabled = false
-                    startTaskButtonView?.isClickable = false
+                    disableButton()
                 }
             }
         })
+    }
 
-        timeTaskTitleView?.text = tempTitle
-
+    private fun disableButton() {
+        startTaskButtonView?.text = getString(R.string.onRunningTaskButtonText)
+        startTaskButtonView?.isEnabled = false
+        startTaskButtonView?.isClickable = false
     }
 }

@@ -30,6 +30,7 @@ class CustomTasksAdapter(val dataSet: ArrayList<TaskDataModel>, val callback: My
             itemView.setOnClickListener {
                 val b = Bundle()
                 b.putString("timeTaskTitle", taskTextViewName?.text.toString())
+                b.putString("timeTaskDescription", taskTextViewDescription?.text.toString())
                 b.putString("taskId", taskIdView?.text.toString())
                 listenerCallback.onIntentCallback(b)
             }

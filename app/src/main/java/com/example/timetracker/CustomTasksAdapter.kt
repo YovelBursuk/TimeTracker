@@ -10,10 +10,10 @@ import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomTasksAdapter(val dataSet: ArrayList<TaskDataModel>) :
+class CustomTasksAdapter(val dataSet: ArrayList<TaskDataModel>, val callback: MyIntentCallback) :
     RecyclerView.Adapter<CustomTasksAdapter.MyViewHolder>() {
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class MyViewHolder(itemView: View, private val listenerCallback: MyIntentCallback): RecyclerView.ViewHolder(itemView) {
         var taskCardView: CardView? = null
         var taskTextViewName: TextView? = null
         var taskTextViewDescription: TextView? = null
@@ -27,11 +27,12 @@ class CustomTasksAdapter(val dataSet: ArrayList<TaskDataModel>) :
             taskImageViewIcon = itemView.findViewById(R.id.taskImageView)
             taskIdView = itemView.findViewById(R.id.taskId)
 
-//            itemView.setOnClickListener {
-//                val b = Bundle()
-//                b.putString("categoryName", textViewName?.text.toString())
-//                listenerCallback.onIntentCallback(b)
-//            }
+            itemView.setOnClickListener {
+                val b = Bundle()
+                b.putString("timeTaskTitle", taskTextViewName?.text.toString())
+                b.putString("taskId", taskIdView?.text.toString())
+                listenerCallback.onIntentCallback(b)
+            }
         }
     }
 
@@ -39,7 +40,7 @@ class CustomTasksAdapter(val dataSet: ArrayList<TaskDataModel>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.tasks_cards_layout, parent, false)
-        return MyViewHolder(view)
+        return MyViewHolder(view, callback)
     }
 
     override fun onBindViewHolder(@NonNull holder: MyViewHolder, position: Int) {

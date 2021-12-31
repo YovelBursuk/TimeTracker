@@ -23,6 +23,10 @@ interface MyTasksGetCallback {
     fun onGetCallback(value: ArrayList<TaskDataModel>)
 }
 
+interface MyTimestampGetCallback {
+    fun onGetCallback(value: String)
+}
+
 interface MyPostCallback {
     fun onPostCallback(value: String)
 }

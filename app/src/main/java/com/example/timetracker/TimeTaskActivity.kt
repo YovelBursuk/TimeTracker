@@ -2,6 +2,8 @@ package com.example.timetracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +20,7 @@ class TimeTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_task)
+        supportActionBar?.title = "TimeTracker - Start Task"
 
         val bundle = intent.extras
         title = bundle?.getString("timeTaskTitle", "Title") ?: ""
@@ -47,6 +50,30 @@ class TimeTaskActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                true
+            }
+            R.id.action_dashboard -> {
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     private fun disableButton() {

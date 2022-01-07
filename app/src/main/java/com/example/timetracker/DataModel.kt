@@ -11,8 +11,7 @@ class TaskDataModel(
     val id: String,
     val categoryId: String,
     val name: String = "Name",
-    val description: String = "Description",
-    val image: Int
+    val description: String = "Description"
 )
 
 interface MyGetCallback {

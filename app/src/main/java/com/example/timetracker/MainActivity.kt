@@ -1,7 +1,12 @@
 package com.example.timetracker
 
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,10 +35,14 @@ class MainActivity : AppCompatActivity() {
         }
     private val openTasksActivityCustom =
         registerForActivityResult(CustomActivityContract(TaskActivity::class.java)) {}
+    private val openDashboardActivityCustom =
+        registerForActivityResult(CustomActivityContract(DashboardActivity::class.java)) {}
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.title = "TimeTracker - Categories"
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.GRAY))
 
         recycleView = findViewById(R.id.my_recycler_view)
         layoutManager = LinearLayoutManager(this)
@@ -64,6 +73,26 @@ class MainActivity : AppCompatActivity() {
             b.putString("popupdescription", "Category Description:")
             b.putString("popupbtn", "Create")
             openPostPopupActivityCustom.launch(b)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                true
+            }
+            R.id.action_dashboard -> {
+                startActivity(Intent(this, DashboardActivity::class.java))
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 }

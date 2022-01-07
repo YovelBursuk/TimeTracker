@@ -3,6 +3,8 @@ package com.example.timetracker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +21,9 @@ class TaskActivity : AppCompatActivity() {
             if (result != null) {
                 val resultName = result.getString("name") ?: "Default"
                 val resultDescription = result.getString("description") ?: "Default"
-                val resultImage = result.getInt("image", R.drawable.ic_launcher)
-                TasksDAL.addTask(categoryId, resultName, resultDescription, resultImage, object: MyPostCallback {
+                TasksDAL.addTask(categoryId, resultName, resultDescription, object: MyPostCallback {
                     override fun onPostCallback(value: String) {
-                        dataSet.add(TaskDataModel(value, categoryId, resultName, resultDescription, resultImage))
+                        dataSet.add(TaskDataModel(value, categoryId, resultName, resultDescription))
                         adapter!!.notifyDataSetChanged()
                     }
                 })
@@ -35,6 +36,8 @@ class TaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
+        supportActionBar?.title = "TimeTracker - Tasks"
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
         val categoryInfo = intent.extras
         val selectedCategoryId: String = categoryInfo?.get("categoryId") as String
@@ -48,6 +51,7 @@ class TaskActivity : AppCompatActivity() {
         adapter = CustomTasksAdapter(dataSet, object: MyIntentCallback {
             override fun onIntentCallback(bundle: Bundle) {
                 openTasksActivityCustom.launch(bundle)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         })
         recycleView?.adapter = adapter
@@ -58,9 +62,7 @@ class TaskActivity : AppCompatActivity() {
                 adapter!!.notifyDataSetChanged()
             }
         })
-//
-//
-//
+
         val myAddCategoryBtnView: FloatingActionButton = findViewById(R.id.add_task)
         myAddCategoryBtnView.setOnClickListener {
             val b = Bundle()
@@ -69,6 +71,30 @@ class TaskActivity : AppCompatActivity() {
             b.putString("popupdescription", "Task Description:")
             b.putString("popupbtn", "Create")
             openPostPopupActivityCustom.launch(b)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                true
+            }
+            R.id.action_dashboard -> {
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 }

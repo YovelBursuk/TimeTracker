@@ -40,6 +40,21 @@ class PopUpWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         overridePendingTransition(0, 0)
         setContentView(R.layout.activity_pop_up_window)
+        
+        // Fade animation for the background of Popup Window
+        val alpha = 100 //between 0-255
+        val alphaColor = ColorUtils.setAlphaComponent(Color.parseColor("#000000"), alpha)
+        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, alphaColor)
+        colorAnimation.duration = 500 // milliseconds
+        colorAnimation.addUpdateListener { animator ->
+            popupWindowBackgroundView?.setBackgroundColor(animator.animatedValue as Int)
+        }
+        colorAnimation.start()
+
+        popupWindowViewWithBorder?.alpha = 0f
+        popupWindowViewWithBorder?.animate()?.alpha(1f)?.setDuration(500)?.setInterpolator(
+            DecelerateInterpolator()
+        )?.start()
 
         val bundle = intent.extras
         popupTitle = bundle?.getString("popuptitle", "Title") ?: ""
@@ -60,21 +75,6 @@ class PopUpWindow : AppCompatActivity() {
         popupWindowTextView?.text = popupText
         popupWindowDescriptionView?.text = popupDescription
         popupWindowButtonView?.text = popupButton
-
-        // Fade animation for the background of Popup Window
-        val alpha = 100 //between 0-255
-        val alphaColor = ColorUtils.setAlphaComponent(Color.parseColor("#000000"), alpha)
-        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, alphaColor)
-        colorAnimation.duration = 500 // milliseconds
-        colorAnimation.addUpdateListener { animator ->
-            popupWindowBackgroundView?.setBackgroundColor(animator.animatedValue as Int)
-        }
-        colorAnimation.start()
-
-        popupWindowViewWithBorder?.alpha = 0f
-        popupWindowViewWithBorder?.animate()?.alpha(1f)?.setDuration(500)?.setInterpolator(
-            DecelerateInterpolator()
-        )?.start()
 
         popupWindowButtonView?.setOnClickListener {
             val returnIntent = Intent()

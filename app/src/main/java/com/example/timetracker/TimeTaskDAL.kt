@@ -1,5 +1,6 @@
 package com.example.timetracker
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -32,5 +33,26 @@ object TimeTaskDAL {
                     myCallback.onGetCallback(res?.first()?.get("taskId") as String)
                 }
             }
+    }
+
+    fun getAllTimeEvents(myCallback: MyTimeEventsGetCallback) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection(COLLECTION_NAME)
+            .orderBy("startedAt", Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val response = ArrayList<TimeEventDataModel>()
+                for (doc in task.result!!) {
+                    val elem = TimeEventDataModel(
+                        doc.id,
+                        doc.get("taskId") as String,
+                        doc.get("startedAt") as Timestamp
+                    )
+                    response.add(elem)
+                }
+                myCallback.onGetCallback(response)
+            }
+        }
     }
 }

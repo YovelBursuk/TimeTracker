@@ -35,14 +35,11 @@ class MainActivity : AppCompatActivity() {
         }
     private val openTasksActivityCustom =
         registerForActivityResult(CustomActivityContract(TaskActivity::class.java)) {}
-    private val openDashboardActivityCustom =
-        registerForActivityResult(CustomActivityContract(DashboardActivity::class.java)) {}
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.title = "TimeTracker - Categories"
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.GRAY))
 
         recycleView = findViewById(R.id.my_recycler_view)
         layoutManager = LinearLayoutManager(this)

@@ -1,5 +1,6 @@
 package com.example.timetracker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -68,6 +69,7 @@ class TimeTaskActivity : AppCompatActivity() {
                 true
             }
             R.id.action_dashboard -> {
+                startActivity(Intent(this, DashboardActivity::class.java))
                 true
             }
             else -> {

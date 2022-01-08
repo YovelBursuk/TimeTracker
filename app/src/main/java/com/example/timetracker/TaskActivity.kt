@@ -1,8 +1,8 @@
 package com.example.timetracker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -56,7 +56,7 @@ class TaskActivity : AppCompatActivity() {
         })
         recycleView?.adapter = adapter
 
-        TasksDAL.getAllTasks(selectedCategoryId, object: MyTasksGetCallback {
+        TasksDAL.getAllTasksByCategory(selectedCategoryId, object: MyTasksGetCallback {
             override fun onGetCallback(value: ArrayList<TaskDataModel>) {
                 dataSet.addAll(value)
                 adapter!!.notifyDataSetChanged()
@@ -90,6 +90,7 @@ class TaskActivity : AppCompatActivity() {
                 true
             }
             R.id.action_dashboard -> {
+                startActivity(Intent(this, DashboardActivity::class.java))
                 true
             }
             else -> {

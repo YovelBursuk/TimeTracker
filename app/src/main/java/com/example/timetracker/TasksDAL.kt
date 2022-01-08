@@ -19,7 +19,7 @@ object TasksDAL {
         }
     }
 
-    fun getAllTasks(selectedCategoryId: String, myGetCallback: MyTasksGetCallback) {
+    fun getAllTasksByCategory(selectedCategoryId: String, myGetCallback: MyTasksGetCallback) {
         val db = FirebaseFirestore.getInstance()
         db.collection(TasksDAL.COLLECTION_NAME)
             .whereEqualTo("categoryId", selectedCategoryId)
@@ -39,5 +39,26 @@ object TasksDAL {
                     myGetCallback.onGetCallback(response)
                 }
         }
+    }
+
+    fun getAllTasks(myGetCallback: MyTasksGetCallback) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection(COLLECTION_NAME)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val response = ArrayList<TaskDataModel>()
+                    for (doc in task.result!!) {
+                        val elem = TaskDataModel(
+                            doc.id,
+                            doc.get("categoryId") as String,
+                            doc.get("name") as String,
+                            doc.get("description") as String
+                        )
+                        response.add(elem)
+                    }
+                    myGetCallback.onGetCallback(response)
+                }
+            }
     }
 }

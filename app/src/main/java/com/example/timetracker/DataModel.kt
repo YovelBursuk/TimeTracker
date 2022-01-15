@@ -21,6 +21,16 @@ class TimeEventDataModel(
     val startedAt: Timestamp
 )
 
+val CATEGORIES_ICONS_MAPPING = mapOf(
+    "Default" to R.drawable.ic_launcher,
+    "Workout" to R.drawable.workout_foreground,
+    "Work" to R.drawable.work_foreground,
+    "Study" to R.drawable.study_foreground,
+    "Food" to R.drawable.food_foreground,
+    "Rest" to R.drawable.vacation_foreground
+)
+val REVERSED_CATEGORIES_ICONS_MAPPING = CATEGORIES_ICONS_MAPPING.entries.associate { (k, v) -> v.toString() to k}
+
 interface MyGetCallback {
     fun onGetCallback(value: ArrayList<DataModel>)
 }

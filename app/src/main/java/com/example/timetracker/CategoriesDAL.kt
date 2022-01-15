@@ -1,15 +1,18 @@
 package com.example.timetracker
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 
 object CategoriesDAL {
     private val COLLECTION_NAME = "categories"
-    private val CATEGORIES_ICONS_MAPPING = mapOf(
-        "Default" to R.drawable.ic_launcher,
-        "Plus" to R.drawable.ic_baseline_add_24
-    )
-    private val REVERSED_CATEGORIES_ICONS_MAPPING = CATEGORIES_ICONS_MAPPING.entries.associate { (k, v) -> v.toString() to k}
+//    private val CATEGORIES_ICONS_MAPPING = mapOf(
+//        "Default" to R.drawable.ic_launcher,
+//        "Workout" to R.drawable.workout_foreground,
+//        "Work" to R.drawable.work_foreground,
+//        "Study" to R.drawable.study_foreground,
+//        "Food" to R.drawable.food_foreground,
+//        "Rest" to R.drawable.vacation_foreground
+//    )
+//    private val REVERSED_CATEGORIES_ICONS_MAPPING = CATEGORIES_ICONS_MAPPING.entries.associate { (k, v) -> v.toString() to k}
 
     fun addCategory(name: String, description: String, icon: Int, myPostCallback: MyPostCallback) {
         val db = FirebaseFirestore.getInstance()

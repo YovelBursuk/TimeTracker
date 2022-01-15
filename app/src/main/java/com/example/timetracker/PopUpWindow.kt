@@ -12,10 +12,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Scroller
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
@@ -25,11 +22,11 @@ class PopUpWindow : AppCompatActivity() {
     private var popupText = ""
     private var popupButton = ""
     private var popupDescription = ""
-    private var inputTitle = ""
-    private var inputDescription = ""
+    private var dropdownDataset: List<String> = CATEGORIES_ICONS_MAPPING.keys.toList()
     var popupWindowTitleView: TextView? = null
     var popupWindowTextView: TextView? = null
     var popupWindowDescriptionView: TextView? = null
+    var popupWindowIconView: TextView? = null
     var popupWindowButtonView: Button? = null
     var popupWindowBackgroundView: ConstraintLayout? = null
     var popupWindowViewWithBorder: CardView? = null
@@ -40,7 +37,11 @@ class PopUpWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         overridePendingTransition(0, 0)
         setContentView(R.layout.activity_pop_up_window)
-        
+
+        val customDropdownAdapter = CustomDropdownAdapter(this, dropdownDataset)
+        val dropdownView: Spinner = findViewById(R.id.popup_window_icon_dropdown)
+        dropdownView.adapter = customDropdownAdapter
+
         // Fade animation for the background of Popup Window
         val alpha = 100 //between 0-255
         val alphaColor = ColorUtils.setAlphaComponent(Color.parseColor("#000000"), alpha)
@@ -60,11 +61,13 @@ class PopUpWindow : AppCompatActivity() {
         popupTitle = bundle?.getString("popuptitle", "Title") ?: ""
         popupText = bundle?.getString("popuptext", "Text") ?: ""
         popupDescription = bundle?.getString("popupdescription", "Description") ?: ""
+        val popupIcon = bundle?.getBoolean("popupicon", false)
         popupButton = bundle?.getString("popupbtn", "Button") ?: ""
 
         popupWindowTitleView = findViewById(R.id.popup_window_title)
         popupWindowTextView = findViewById(R.id.popup_window_text)
         popupWindowDescriptionView = findViewById(R.id.popup_window_description)
+        popupWindowIconView = findViewById(R.id.popup_window_icon)
         popupWindowButtonView = findViewById(R.id.popup_window_button)
         popupWindowBackgroundView = findViewById(R.id.popup_window_background)
         popupWindowViewWithBorder = findViewById(R.id.popup_window_view_with_border)
@@ -76,11 +79,17 @@ class PopUpWindow : AppCompatActivity() {
         popupWindowDescriptionView?.text = popupDescription
         popupWindowButtonView?.text = popupButton
 
+        if (popupIcon == false) {
+            popupWindowIconView?.visibility = View.GONE
+            dropdownView.visibility = View.GONE
+        }
+
         popupWindowButtonView?.setOnClickListener {
             val returnIntent = Intent()
             returnIntent.putExtra("name", inputTitleView?.text.toString())
             returnIntent.putExtra("description", inputDescriptionView?.text.toString())
-            returnIntent.putExtra("image", R.drawable.ic_baseline_add_24)
+            val selectedIcon: String = dropdownView.selectedItem as String
+            returnIntent.putExtra("image", CATEGORIES_ICONS_MAPPING[selectedIcon])
             setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }

@@ -1,7 +1,6 @@
 package com.example.timetracker
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +30,8 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>, val callback: MyIntentCal
 
             itemView.setOnClickListener {
                 val b = Bundle()
-                Log.d("Message", "Yovel the card id is ${cardId?.text.toString()}")
                 b.putString("categoryId", cardId?.text.toString())
+                b.putString("categoryName", textViewName?.text.toString())
                 listenerCallback.onIntentCallback(b)
             }
         }

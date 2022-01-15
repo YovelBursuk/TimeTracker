@@ -36,11 +36,12 @@ class TaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
-        supportActionBar?.title = "TimeTracker - Tasks"
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
         val categoryInfo = intent.extras
         val selectedCategoryId: String = categoryInfo?.get("categoryId") as String
+        val selectedCategoryName: String = categoryInfo.get("categoryName") as String
+        supportActionBar?.title = "TimeTracker - Tasks - $selectedCategoryName"
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
         categoryId = selectedCategoryId
         recycleView = findViewById(R.id.my_tasks_recycler_view)
@@ -86,9 +87,6 @@ class TaskActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
-                true
-            }
             R.id.action_dashboard -> {
                 startActivity(Intent(this, DashboardActivity::class.java))
                 true

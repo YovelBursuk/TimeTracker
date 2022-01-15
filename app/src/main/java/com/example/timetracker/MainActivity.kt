@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             b.putString("popuptitle", "Add Category")
             b.putString("popuptext", "Category Title:")
             b.putString("popupdescription", "Category Description:")
+            b.putBoolean("popupicon", true)
             b.putString("popupbtn", "Create")
             openPostPopupActivityCustom.launch(b)
         }
@@ -80,9 +81,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
-                true
-            }
             R.id.action_dashboard -> {
                 startActivity(Intent(this, DashboardActivity::class.java))
                 true

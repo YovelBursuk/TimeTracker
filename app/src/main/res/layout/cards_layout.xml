@@ -30,11 +30,13 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_launcher"
+                android:maxWidth="5dp"
+                android:maxHeight="5dp"
+                android:src="@drawable/work_foreground"
                 android:tag="image_tag" />
 
             <LinearLayout

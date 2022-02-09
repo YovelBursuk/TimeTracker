@@ -4,15 +4,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 object CategoriesDAL {
     private val COLLECTION_NAME = "categories"
-//    private val CATEGORIES_ICONS_MAPPING = mapOf(
-//        "Default" to R.drawable.ic_launcher,
-//        "Workout" to R.drawable.workout_foreground,
-//        "Work" to R.drawable.work_foreground,
-//        "Study" to R.drawable.study_foreground,
-//        "Food" to R.drawable.food_foreground,
-//        "Rest" to R.drawable.vacation_foreground
-//    )
-//    private val REVERSED_CATEGORIES_ICONS_MAPPING = CATEGORIES_ICONS_MAPPING.entries.associate { (k, v) -> v.toString() to k}
 
     fun addCategory(name: String, description: String, icon: Int, myPostCallback: MyPostCallback) {
         val db = FirebaseFirestore.getInstance()
@@ -32,10 +23,10 @@ object CategoriesDAL {
         val db = FirebaseFirestore.getInstance()
         db.collection(COLLECTION_NAME).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val response = ArrayList<DataModel>()
+                val response = ArrayList<CategoryDataModel>()
                 for (doc in task.result!!) {
                     val elemImage = CATEGORIES_ICONS_MAPPING[doc.get("image")] ?: R.drawable.ic_launcher
-                    val elem = DataModel(
+                    val elem = CategoryDataModel(
                         doc.id,
                         doc.get("name") as String,
                         doc.get("description") as String,

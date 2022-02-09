@@ -21,7 +21,7 @@ object TasksDAL {
 
     fun getAllTasksByCategory(selectedCategoryId: String, myGetCallback: MyTasksGetCallback) {
         val db = FirebaseFirestore.getInstance()
-        db.collection(TasksDAL.COLLECTION_NAME)
+        db.collection(COLLECTION_NAME)
             .whereEqualTo("categoryId", selectedCategoryId)
             .get()
             .addOnCompleteListener { task ->

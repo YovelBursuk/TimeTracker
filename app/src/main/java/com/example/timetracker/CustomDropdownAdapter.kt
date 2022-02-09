@@ -12,22 +12,20 @@ class CustomDropdownAdapter(val context: Context, var dataSet: List<String>): Ba
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-
         val view: View
-        val vh: ItemHolder
+        val holder: ItemHolder
         if (convertView == null) {
             view = inflater.inflate(R.layout.dropdown_item, parent, false)
-            vh = ItemHolder(view)
-            view?.tag = vh
+            holder = ItemHolder(view)
+            view?.tag = holder
         } else {
             view = convertView
-            vh = view.tag as ItemHolder
+            holder = view.tag as ItemHolder
         }
-        vh.label.text = dataSet[position]
+        holder.label.text = dataSet[position]
 
-//        val id = context.resources.getIdentifier(dataSet.get(position).url, "drawable", context.packageName)
         val id = CATEGORIES_ICONS_MAPPING[dataSet[position]] ?: R.drawable.ic_launcher
-        vh.img.setBackgroundResource(id)
+        holder.img.setBackgroundResource(id)
 
         return view
     }

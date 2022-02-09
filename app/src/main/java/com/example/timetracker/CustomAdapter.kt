@@ -10,7 +10,7 @@ import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(val dataSet: ArrayList<DataModel>, val callback: MyIntentCallback):
+class CustomAdapter(val categoryDataSet: ArrayList<CategoryDataModel>, val callback: MyIntentCallback):
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View, private val listenerCallback: MyIntentCallback) :
@@ -50,14 +50,14 @@ class CustomAdapter(val dataSet: ArrayList<DataModel>, val callback: MyIntentCal
         val imageView: ImageView? = holder.imageViewIcon
         val cardIdView: TextView? = holder.cardId
 
-        textViewName?.text = dataSet[position].name
-        textViewDescription?.text = dataSet[position].description
-        imageView?.setImageResource(dataSet[position].image)
-        cardIdView?.text = dataSet[position].id
+        textViewName?.text = categoryDataSet[position].name
+        textViewDescription?.text = categoryDataSet[position].description
+        imageView?.setImageResource(categoryDataSet[position].image)
+        cardIdView?.text = categoryDataSet[position].id
     }
 
     override fun getItemCount(): Int {
-        return dataSet.size
+        return categoryDataSet.size
     }
 
 

@@ -2,7 +2,6 @@ package com.example.timetracker
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -23,9 +22,9 @@ import kotlin.collections.HashMap
 
 
 class DashboardActivity : AppCompatActivity() {
-    lateinit var pieChart: PieChart
-    lateinit var pieChart2: PieChart
-    var allCategories: ArrayList<DataModel> = ArrayList()
+    lateinit var categoriesPieChart: PieChart
+    lateinit var tasksPieChart: PieChart
+    var allCategories: ArrayList<CategoryDataModel> = ArrayList()
     var allTasks: ArrayList<TaskDataModel> = ArrayList()
     var allTimeEvents: ArrayList<TimeEventDataModel> = ArrayList()
 
@@ -34,19 +33,19 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
         supportActionBar?.title = "TimeTracker - Dashboard"
 
-        pieChart = findViewById(R.id.pieChart_view)
-        pieChart2 = findViewById(R.id.pieChart_view2)
-        pieChart.setOnChartValueSelectedListener(PieChartOnChartValueSelected(allTasks, allTimeEvents, object: MyFunctionCallback {
+        categoriesPieChart = findViewById(R.id.pieChart_view)
+        tasksPieChart = findViewById(R.id.pieChart_view2)
+        categoriesPieChart.setOnChartValueSelectedListener(PieChartOnChartValueSelected(allTasks, allTimeEvents, object: MyFunctionCallback {
             override fun onCallCallback(value: MutableMap<String, Float?>) {
-                showPieChart(pieChart2, value, false)
+                showPieChart(tasksPieChart, value, false)
             }
         }))
 
-        pieChart.visibility = View.GONE
-        pieChart2.visibility = View.GONE
+        categoriesPieChart.visibility = View.GONE
+        tasksPieChart.visibility = View.GONE
 
         CategoriesDAL.getAllCategories(object: MyGetCallback {
-            override fun onGetCallback(value: ArrayList<DataModel>) {
+            override fun onGetCallback(value: ArrayList<CategoryDataModel>) {
                 allCategories.addAll(value)
 
                 TasksDAL.getAllTasks(object: MyTasksGetCallback {
@@ -69,7 +68,7 @@ class DashboardActivity : AppCompatActivity() {
     private fun calculateCharts() {
         val progressBar: ProgressBar = findViewById(R.id.progress_Bar)
         val progressBarText: TextView = findViewById(R.id.progressBarText)
-        val categoriesMapping: MutableMap<String, DataModel> = HashMap()
+        val categoriesMapping: MutableMap<String, CategoryDataModel> = HashMap()
         val tasksMapping: MutableMap<String, TaskDataModel> = HashMap()
         val categoriesChartEntries: MutableMap<String, Float?> = HashMap()
 
@@ -78,27 +77,25 @@ class DashboardActivity : AppCompatActivity() {
             categoriesChartEntries[item.id] = 0f
         }
         for (item in allTasks) { tasksMapping[item.id] = item }
-//        allTimeEvents.add(TimeEventDataModel("currentTask", allTimeEvents.last().taskId, Timestamp.now()))
         val totalTimeRange = (allTimeEvents.first().startedAt.toDate().time / 1000f / 3600f / 24f) - (allTimeEvents.last().startedAt.toDate().time / 1000f / 3600f / 24f)
 
         for (i in 0 until allTimeEvents.size - 1) {
             val firstEvent = allTimeEvents[i]
             val secondEvent = allTimeEvents[i + 1]
             val eventCategoryId = categoriesMapping[tasksMapping[secondEvent.taskId]!!.categoryId]!!.id
-            Log.d("message", "Category name is $eventCategoryId")
             categoriesChartEntries[eventCategoryId] =
                 categoriesChartEntries[eventCategoryId]?.plus(((
                         ((firstEvent.startedAt.toDate().time / 1000f / 3600f / 24f) - (secondEvent.startedAt.toDate().time / 1000f / 3600f / 24f)) / totalTimeRange) * 100f)
                 )
         }
 
-        showPieChart(pieChart, categoriesChartEntries, true)
+        showPieChart(categoriesPieChart, categoriesChartEntries, true)
         progressBar.visibility = View.GONE
         progressBarText.visibility = View.GONE
-        pieChart.visibility = View.VISIBLE
-        pieChart2.visibility = View.VISIBLE
-        pieChart2.setNoDataText("Click on a category above to load more data")
-        pieChart2.setNoDataTextColor(Color.BLACK)
+        categoriesPieChart.visibility = View.VISIBLE
+        tasksPieChart.visibility = View.VISIBLE
+        tasksPieChart.setNoDataText("Click on a category above to load more data")
+        tasksPieChart.setNoDataTextColor(Color.BLACK)
     }
 
     private fun showPieChart(pieChart: PieChart, givenMap: MutableMap<String, Float?>, isChartDataCategories: Boolean) {
@@ -126,7 +123,6 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
         for (type in typeAmountMap.keys) {
-            Log.d("message", "Yovel the data is ${typeAmountMap[type]} and type is $type")
             if (typeAmountMap[type]!!.getFloat("value") >= 1f) {
                 pieEntries.add(PieEntry(typeAmountMap[type]!!.getFloat("value"), type, typeAmountMap[type]!!))
             }

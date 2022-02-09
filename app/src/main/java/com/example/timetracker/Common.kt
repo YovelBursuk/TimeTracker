@@ -3,10 +3,10 @@ package com.example.timetracker
 import android.os.Bundle
 import com.google.firebase.Timestamp
 
-class DataModel(val id: String,
-                val name: String = "Name",
-                val description: String = "Description",
-                val image: Int)
+class CategoryDataModel(val id: String,
+                        val name: String = "Name",
+                        val description: String = "Description",
+                        val image: Int)
 
 class TaskDataModel(
     val id: String,
@@ -32,7 +32,7 @@ val CATEGORIES_ICONS_MAPPING = mapOf(
 val REVERSED_CATEGORIES_ICONS_MAPPING = CATEGORIES_ICONS_MAPPING.entries.associate { (k, v) -> v.toString() to k}
 
 interface MyGetCallback {
-    fun onGetCallback(value: ArrayList<DataModel>)
+    fun onGetCallback(value: ArrayList<CategoryDataModel>)
 }
 
 interface MyTasksGetCallback {

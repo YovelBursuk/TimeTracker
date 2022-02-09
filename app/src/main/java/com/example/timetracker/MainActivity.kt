@@ -1,8 +1,6 @@
 package com.example.timetracker
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -14,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-    private var dataSet: ArrayList<DataModel> = ArrayList()
+    private var categoryDataSet: ArrayList<CategoryDataModel> = ArrayList()
     private var recycleView: RecyclerView? = null
     private var layoutManager: LinearLayoutManager? = null
     private var adapter: CustomAdapter? = null
@@ -26,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                 val resultImage = result.getInt("image", R.drawable.ic_launcher)
                 CategoriesDAL.addCategory(resultName, resultDescription, resultImage, object: MyPostCallback {
                     override fun onPostCallback(value: String) {
-                        dataSet.add(DataModel(value, resultName, resultDescription, resultImage))
+                        categoryDataSet.add(CategoryDataModel(value, resultName, resultDescription, resultImage))
                         adapter!!.notifyDataSetChanged()
                     }
                 })
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         recycleView?.layoutManager = layoutManager
         recycleView?.itemAnimator = DefaultItemAnimator()
 
-        adapter = CustomAdapter(dataSet, object: MyIntentCallback {
+        adapter = CustomAdapter(categoryDataSet, object: MyIntentCallback {
             override fun onIntentCallback(bundle: Bundle) {
                 openTasksActivityCustom.launch(bundle)
             }
@@ -54,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         recycleView?.adapter = adapter
 
         CategoriesDAL.getAllCategories(object: MyGetCallback {
-            override fun onGetCallback(value: ArrayList<DataModel>) {
-                dataSet.addAll(value)
+            override fun onGetCallback(value: ArrayList<CategoryDataModel>) {
+                categoryDataSet.addAll(value)
                 adapter!!.notifyDataSetChanged()
             }
         })
